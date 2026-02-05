@@ -37,7 +37,6 @@ form label {
   flex-direction: column;
   gap: 0.5em;
   font-weight: 500;
-  /* align-items: center; */
 }
 
 form label input,
@@ -88,7 +87,6 @@ form div#result {
     hsla(105, 100%, 39%, 1) 61%
   );
   color: rgb(228, 251, 229);
-  /* width: 100%; */
   border-radius: 1em;
   padding: 0.4em 0;
 }

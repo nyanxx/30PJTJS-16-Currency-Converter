@@ -4,7 +4,6 @@ import type { CountryData } from "./assets/countriesData"
 
 // Init Dexie
 const db = new MyDexieDatabase("currency_rates_db", 1, "c_rates", "base_code")
-// const table = db.table<CurrencyDataResponse>("c_rates")
 
 const convertFrom = document.getElementById("current-currency-type")
 const convertTo = document.getElementById("to-currency-type")
@@ -23,7 +22,6 @@ sortedCountriesData.forEach((country: CountryData): void => {
         convertTo.appendChild(optionElement.cloneNode(true))
     }
 })
-
 
 const formElement = document.getElementById("form")
 if (formElement instanceof HTMLFormElement) {
@@ -69,15 +67,11 @@ async function getFromCache(ccFrom: string, ccTo: string): Promise<number | null
 async function convertCurrency(from: string, to: string, amount: number): Promise<void> {
     let exchageRate: number | null = await getFromCache(from, to)
     if (!exchageRate) {
-        // fetch from origin
         console.log("fetching from ORIGIN....")
-        // https://open.er-api.com/v6/latest/USD
         try {
-            // const response = await fetch("../dummyData.json")
             const response = await fetch(`https://open.er-api.com/v6/latest/${from}`)
             const data: CurrencyDataResponse = await response.json()
             if (data.result === "success" && data.base_code === from) {
-                // Add in cache
                 try {
                     db.c_rates.put(data)
                     console.log("Data CACHED success!")
