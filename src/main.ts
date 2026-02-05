@@ -2,7 +2,7 @@ import MyDexieDatabase from "./utils"
 import countriesData from "./assets/countriesData"
 import type { CountryData } from "./assets/countriesData"
 
-// Init Dexie
+// Init Dexie   
 const db = new MyDexieDatabase("currency_rates_db", 1, "c_rates", "base_code")
 
 const convertFrom = document.getElementById("current-currency-type")
@@ -34,7 +34,7 @@ if (formElement instanceof HTMLFormElement) {
         if (amount && changeFrom && changeTo) {
             convertCurrency(changeFrom, changeTo, amount)
         } else {
-            console.log("fields are missing!")
+            console.log("Fields are missing!")
         }
     })
 
@@ -54,20 +54,25 @@ export type CurrencyDataResponse = {
     rates: Record<string, number>,
 }
 
+
+function isExpired(unix_time: number) {
+    return Math.floor(Date.now() / 1000) > unix_time
+}
+
 async function getFromCache(ccFrom: string, ccTo: string): Promise<number | null> {
     const data: CurrencyDataResponse | undefined = await db.c_rates.get(ccFrom)
-    if (data) {
-        console.log("serving from CACHE")
-        return data.rates[ccTo]
-    } else {
+    if (!data) return null
+    if (isExpired(data.time_next_update_unix)) {
+        console.warn("Data in CACHE is expired!")
         return null
-    }
+    } console.log("Serving from CACHE")
+    return data.rates[ccTo]
 }
 
 async function convertCurrency(from: string, to: string, amount: number): Promise<void> {
     let exchageRate: number | null = await getFromCache(from, to)
     if (!exchageRate) {
-        console.log("fetching from ORIGIN....")
+        console.log("Fetching from ORIGIN....")
         try {
             const response = await fetch(`https://open.er-api.com/v6/latest/${from}`)
             const data: CurrencyDataResponse = await response.json()
@@ -97,3 +102,5 @@ function renderCurrency(amount: number, currencyCode: string) {
         result.innerText = `${amount.toFixed(2)} ${currencyCode}`
     }
 }
+
+
