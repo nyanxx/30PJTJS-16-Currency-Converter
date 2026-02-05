@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/currency-svgrepo-com.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Currency Converter</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Currency Converter</h1>
+      </header>
+
+      <form id="form">
+        <label for="amount">
+          Enter Amount:
+          <input id="amount" name="amount" type="number" placeholder="251" />
+        </label>
+
+        <label for="current-currency-type">
+          Convert From:
+          <select name="current-currency-type" id="current-currency-type">
+            <option value="" disabled selected>Convert from...</option>
+          </select>
+        </label>
+
+        <label for="to-currency-type">
+          Convert To:
+          <select name="to-currency-type" id="to-currency-type">
+            <option value="" disabled selected>Convert to...</option>
+          </select>
+        </label>
+
+        <div class="btn-container">
+          <button type="submit">Convert</button>
+        </div>
+
+        <div id="result">90 RS</div>
+      </form>
+    </main>
+
+    <footer>
+      <a href="https://www.exchangerate-api.com">Rates By Exchange Rate API</a>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
